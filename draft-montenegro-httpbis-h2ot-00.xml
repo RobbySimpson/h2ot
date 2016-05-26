@@ -211,16 +211,13 @@ This document makes the case for HTTP/2 for IoT.
     <references title="Normative References">
       &RFC2119;
       &RFC2616;
-      <?rfc include='reference.I-D.ietf-httpbis-p1-messaging.xml'?>
+      &RFC2730;
+      &RFC2731;
       <?rfc include='reference.I-D.ietf-httpbis-p2-semantics.xml'?>
    </references>
 
    <references title="Informative References">
       &RFC2629;
-      &RFC6455;
-      <?rfc include='reference.I-D.mbelshe-httpbis-spdy.xml'?>
-      <?rfc include='reference.I-D.montenegro-httpbis-speed-mobility.xml'?>
-      <?rfc include='reference.I-D.tarreau-httpbis-network-friendly.xml'?>
    </references>
   </back>
 </rfc>
