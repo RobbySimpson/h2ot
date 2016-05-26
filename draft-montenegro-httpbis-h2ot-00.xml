@@ -36,7 +36,7 @@
     <keyword>HTTP, IoT</keyword>
     <abstract>
 	    <t>
-This document makes the case for HTTP/2 as the protocol of choice for IoT. 
+This document makes the case for HTTP/2 for IoT. 
 	    </t>
     </abstract>
   </front>
@@ -48,7 +48,20 @@ This document makes the case for HTTP/2 as the protocol of choice for IoT.
     for IPv6, much work elsewhere in the stack was necessary. One of the main questions was what protocol to use for 
     applications in IoT. That question may not have a single answer that is always best for all scenarios and use
     cases. There are many such use cases, in accordance with the fact that "IoT" means too many things.
-    Nevertheless it is useful to look at some application communication patterns to establish some
+    Accordingly, the IoT landscape includes a proliferation of options for any particular functionality 
+    (protocols, encoding, security suites, authentication/authorization, etc). 
+    Many of these are being created expressly for IoT (within the IETF and elsewhere) with the 
+    justification that the mainstream options could not possibly be usable for IoT scenarios, 
+    leading towards multiple disparate networking and software stacks. This adds complexity to IoT 
+    and, importantly, amplifies the attack surface. However, properly configured and implemented, 
+    mainstream options may not just be workable, but may even be the best option. 
+
+    In terms of transport, HTTP/2 is now widely available. Moreover the ongoing effort to layer HTTP/2 
+    over UDP (i.e., over QUIC) adds a useful capability for IoT. We show the current suitability of 
+    HTTP/2 for IoT scenarios and examine possible improvements.    
+    </t>
+    <t>
+    Let's look at some application communication patterns to establish some
     common language:
     
    <list style='hanging'>
