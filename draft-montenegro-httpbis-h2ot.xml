@@ -33,7 +33,7 @@
       </address>
     </author>
 
-    <date month="July" year="2015" />
+    <date month="June" year="2016" />
     <area>Applications</area>
     <keyword>HTTP, IoT</keyword>
     <abstract>
@@ -44,7 +44,7 @@ This document makes the case for HTTP/2 for IoT.
   </front>
 
   <middle>
-    <section anchor="intro" title="Introduction">
+    <section anchor="intro" title="Introduction (gab)">
 	<t>
     When the IETF started work on IoT with the 6lowpan WG, it was clear that in addition to the lower-layer adaptation work 
     for IPv6, much work elsewhere in the stack was necessary. One of the main questions was what protocol to use for 
@@ -112,7 +112,7 @@ This document makes the case for HTTP/2 for IoT.
 	</section>
 
 
-<section title="Application Transport Alternatives and their Strengths"> 
+<section title="Application Transport Alternatives and their Strengths (Sandra)"> 
   <t>
 		A recent survey by the Eclipse IoT working group queried IoT developers about the protocols and technologies they are using 
     and planning to use. Some of the 
@@ -196,11 +196,58 @@ This document makes the case for HTTP/2 for IoT.
 
 </section>
 
+<section title="Importance of Protocol Reuse (gab)"> 
+  <t>
+    TODO
+  </t>
+</section>
+
+<section title="HTTP/2 in IoT (gab)"> 
+  <t>
+    TODO
+  </t>
+</section>
+
+<section title="HTTP/2 over UDP - QUIC (salvatore)"> 
+  <t>
+    TODO
+  </t>
+</section>
+
+<section title="Profile of HTTP/2 for IoT (gab)"> 
+  <t>
+    TODO
+  </t>
+</section>
+
+<section title="Negotiation of HTTP/2 for IoT (gab)"> 
+  <t>
+    TODO
+  </t>
+</section>
+
+<section title="Gateway and Proxying Issues (Salvatore)"> 
+  <t>
+    TODO
+  </t>
+</section>
+
+<section title="Implementation Considerations (Sandra)"> 
+  <t>
+    TODO
+  </t>
+</section>
+
+<section title="Experimentation and Performance (?)"> 
+  <t>
+    TODO
+  </t>
+</section>
 
 
     <section title="Acknowledgements">
       <t>
-    Thanks for interesting discussions to Ivan Pashov, Robby Simpson and Geoff Mulligan.
+    Thanks to ...
       </t>
       <t>
     This document was produced using the xml2rfc tool <xref target="RFC2629"/>. 
