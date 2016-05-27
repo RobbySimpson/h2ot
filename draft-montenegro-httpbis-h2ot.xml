@@ -14,7 +14,9 @@
   <!ENTITY RFC5246 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.5246.xml'>
   <!ENTITY RFC6454 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.6454.xml'>
   <!ENTITY RFC6455 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.6455.xml'>
-]>
+  <!ENTITY RFC7230 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.7230.xml'>
+  <!ENTITY RFC7231 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml'>
+  ]>
 
 <?xml-stylesheet type="text/xsl" href="rfc2629.xml"?>
 
@@ -211,9 +213,8 @@ This document makes the case for HTTP/2 for IoT.
     <references title="Normative References">
       &RFC2119;
       &RFC2616;
-      &RFC2730;
-      &RFC2731;
-      <?rfc include='reference.I-D.ietf-httpbis-p2-semantics.xml'?>
+      &RFC7230;
+      &RFC7231;
    </references>
 
    <references title="Informative References">
