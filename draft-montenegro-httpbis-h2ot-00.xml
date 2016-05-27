@@ -20,7 +20,7 @@
 
 <?rfc toc="yes" symrefs="yes"?>
 
-<rfc ipr="trust200902" category="info" docName="draft-montenegro-iot-transport-http2-00">
+<rfc ipr="trust200902" category="info" docName="draft-montenegro-httpbis-h2ot-00">
   <front>
 	  <title abbrev="HTTP/2 for IoT">HTTP/2 for the Internet of Things</title>
 
