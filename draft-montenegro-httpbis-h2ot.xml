@@ -1,0 +1,227 @@
+<?xml version="1.0"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+  <!ENTITY RFC0793 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.0793.xml'>
+  <!ENTITY RFC1738 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.1738.xml'>
+  <!ENTITY RFC1950 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.1950.xml'>
+  <!ENTITY RFC2119 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml'>
+  <!ENTITY RFC2285 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2285.xml'>
+  <!ENTITY RFC2616 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2616.xml'>
+  <!ENTITY RFC2617 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2617.xml'>
+  <!ENTITY RFC2629 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2629.xml'>
+  <!ENTITY RFC2818 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2818.xml'>
+  <!ENTITY RFC4366 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.4366.xml'>
+  <!ENTITY RFC4559 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.4559.xml'>
+  <!ENTITY RFC5246 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.5246.xml'>
+  <!ENTITY RFC6454 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.6454.xml'>
+  <!ENTITY RFC6455 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.6455.xml'>
+]>
+
+<?xml-stylesheet type="text/xsl" href="rfc2629.xml"?>
+
+<?rfc toc="yes" symrefs="yes"?>
+
+<rfc ipr="trust200902" category="info" docName="draft-montenegro-httpbis-h2ot-latest">
+  <front>
+	  <title abbrev="HTTP/2 for IoT">HTTP/2 for the Internet of Things</title>
+
+    <author initials="G." surname="Montenegro" fullname="Gabriel Montenegro">
+      <organization>Microsoft</organization>
+      <address>
+        <email>Gabriel.Montenegro@microsoft.com</email>
+      </address>
+    </author>
+
+    <date month="July" year="2015" />
+    <area>Applications</area>
+    <keyword>HTTP, IoT</keyword>
+    <abstract>
+	    <t>
+This document makes the case for HTTP/2 for IoT. 
+	    </t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section anchor="intro" title="Introduction">
+	<t>
+    When the IETF started work on IoT with the 6lowpan WG, it was clear that in addition to the lower-layer adaptation work 
+    for IPv6, much work elsewhere in the stack was necessary. One of the main questions was what protocol to use for 
+    applications in IoT. That question may not have a single answer that is always best for all scenarios and use
+    cases. There are many such use cases, in accordance with the fact that "IoT" means too many things.
+    
+</t>
+<t> 
+    Accordingly, the IoT landscape includes a proliferation of options for any particular functionality 
+    (protocols, encoding, security suites, authentication/authorization, etc). 
+    Many of these are being created expressly for IoT (within the IETF and elsewhere) with the 
+    justification that the mainstream options could not possibly be usable for IoT scenarios, 
+    leading towards multiple disparate networking and software stacks. This adds complexity to IoT 
+    and, importantly, amplifies the attack surface. However, properly configured and implemented, 
+    mainstream options may not just be workable, but may even be the best option. 
+</t>
+<t> 
+    In terms of transport, HTTP/2 is now widely available. Moreover the ongoing effort to layer HTTP/2 
+    over UDP (i.e., over QUIC) adds a useful capability for IoT. We show the current suitability of 
+    HTTP/2 for IoT scenarios and examine possible improvements.    
+    </t>
+    <t>
+    Let's look at some application communication patterns to establish some
+    common language:
+    
+   <list style='hanging'>
+		<t hangText="node to node:"> 
+			A constrained node engages in direct communication with another constrained node.
+		</t>
+    
+		<t hangText="node to gateway:"> 
+			A constrained node and a gateway node engage in direct communication. A gateway node is directly on both a constrained network
+      (e.g., a lowpan) and on a non-constrained network (a normal network using mainstream stack implementations, typically connected 
+      to the Internet).
+		</t>
+    
+		<t hangText="gateway to cloud:">
+			A gateway node (see above) engages in communication with unconstrained networks, typically a cloud service on the Internet.
+		</t>
+
+		<t hangText="gateway to cloud:">			
+      A node on a constrained network engages in direct communcation with unconstrained networks, typically a cloud service on the Internet.
+		</t>
+	</list>   
+	</t>
+
+	<t>
+    We can further categorize the above communication patterns into two basic types of networking exchanges:
+
+   <list style='hanging'>
+		<t hangText="Constrained network scenario:"> 
+			A constrained network scenario includes node to node and node to gateway exchanges.
+		</t>
+    
+		<t hangText="Internet scenario:"> 
+			An Internet scenario includes gateway to cloud and node to cloud exchanges.
+		</t>
+	</list> 
+	</t>
+  
+	<t>
+    This document makes the case for HTTP/2 as the most general protocol of choice for Internet of Things applications,
+    suitable for both Constrained network scenarios and Internet scenarios.
+	</t>
+	</section>
+
+
+<section title="Application Transport Alternatives and their Strengths"> 
+  <t>
+		A recent survey by the Eclipse IoT working group queried IoT developers about the protocols and technologies they are using 
+    and planning to use. Some of the 
+    currently used application transport protocols (above the link layer) for IoT applications are as follows:
+    
+  <list style='symbols'>
+		<t> 
+			HTTP/1.1 (63% of developers)
+		</t>
+		<t> 
+			MQTT (53% of developers)
+		</t>
+		<t> 
+			CoAP (21% of developers)
+		</t>
+		<t> 
+			Others: AMQP and XMPP (11% of developers)
+		</t>
+	</list>
+  
+	</t>
+  
+  <t>
+    The sections below provide some more details.
+  </t>   
+  
+    <section title="HTTP/1.1"> 
+		<t> 
+      HTTP/1.1 is a text-based protocol, and is widely successful as it is the basis not just for the web, but for much non-web traffic in the internet today.
+      Most (but not all) of the instances of HTTP today version 1.1 as specified in RFC2616. Since its publication back in 1999 it has evolved organically,
+      producing countless variations and exceptions to its rules. Modern browser and server implementations have very complex and convoluted
+      code to deal with parsing and handling the many nuances of the protocol. Because of all this confusion, the HTTPbis working group set out to
+      clarify the existing specifications, and after a multi-year effort to clarify its many sources of confusion, it has published a cleaner specification
+      in RFCs 7230-7235. In spite of this, the protocol still has a plethora of legacy issues and remains too verbose.
+		</t>
+
+		<t>       
+      HTTP/1.1 is very clearly a mismatch for the constrained devices and networks that characterize IoT. Despite its shortcomings, it is the most 
+      popular protocol for IoT applications (63% per the aforementioned survey). Why would such an ill-suited protocol be clearly the most
+      popular for IoT applications? It is by far the most commonly known protocol. It has
+      many implementations, plenty in open source, with massive support in all platforms, tools and APIs. It is easy to find know-how and support. 
+      In short, it has the power and convenience that comes with being the mainstream protocol. 
+		</t>
+    
+		<t>       
+      Another major advantage is that it is the protocol that has the best chance of traversing firewalls and middle boxes in the internet due 
+      to its use of port 80 when in the clear, and, especially, its use of port 443 when over TLS.
+		</t>    
+    </section>
+
+    <section title="MQTT"> 
+		<t> 
+      MQ Telemetry Transport (MQTT) is a publish/subscribe messaging protocol created by IBM, now being standardized
+      by OASIS. It is popular in the internet scenario (node to cloud, gateway to cloud). It is a compact, binary protocol,
+      and is very popular in certain application domains.
+		</t>
+
+		<t>       
+      It is the second most popular protocol in the survey (behind HTTP/1.1) with 53% of developers using it. In the internet scenario,
+      however, TLS is mandatory. In practice, additional TLS overhead is required for all Internet scenario exchanges, so all
+      protocols are slightly larger and MQTT loses some relative size advantage. There is a spec for MQTT over UDP, but, by far 
+      it is most commonly deployed over TCP (port 8833 when over TLS,
+      port 1883 without TLS). Even when using TLS, it has the well-known firewall traversal issues common to any protocol not over port 
+      443.
+		</t>
+    </section>
+
+    <section title="CoAP"> 
+		<t> 
+      CoAP is a compact, binary UDP-based protocol based on RESTful principles and closely patterned after HTTP/1.1. 
+      It also adds some semantics.  
+		</t>
+   	<t> 
+      When the IETF CoAP 
+		</t>
+
+		<t>       
+
+		</t>
+    </section>
+
+</section>
+
+
+
+    <section title="Acknowledgements">
+      <t>
+    Thanks for interesting discussions to Ivan Pashov, Robby Simpson and Geoff Mulligan.
+      </t>
+      <t>
+    This document was produced using the xml2rfc tool <xref target="RFC2629"/>. 
+      </t>
+    </section>
+
+  </middle>
+
+  <back>
+    <references title="Normative References">
+      &RFC2119;
+      &RFC2616;
+      &RFC2730;
+      &RFC2731;
+      <?rfc include='reference.I-D.ietf-httpbis-p2-semantics.xml'?>
+   </references>
+
+   <references title="Informative References">
+      &RFC2629;
+   </references>
+  </back>
+</rfc>
+
+<!--
+  edited with Visual Studio Code
+  -->
