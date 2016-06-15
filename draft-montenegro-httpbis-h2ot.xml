@@ -115,28 +115,30 @@ This document makes the case for HTTP/2 for IoT.
 <section title="Application Transport Alternatives and their Strengths (Sandra)"> 
   <t>
 		A recent survey by the Eclipse IoT working group queried IoT developers about the protocols and technologies they are using 
-    and planning to use. Some of the 
-    currently used application transport protocols (above the link layer) for IoT applications are as follows:
+    and planning to use <xref target="Eclipse_survey"></xref>. Some of the currently used application transport protocols (above the link layer) for IoT applications are as follows:
     
   <list style='symbols'>
 		<t> 
-			HTTP/1.1 (63% of developers)
+			HTTP/1.1 (61% of developers)
 		</t>
 		<t> 
-			MQTT (53% of developers)
+			MQTT (52% of developers)
 		</t>
 		<t> 
 			CoAP (21% of developers)
 		</t>
 		<t> 
-			Others: AMQP and XMPP (11% of developers)
+			HTTP/2 (19% of developers)
+		</t>
+		<t> 
+			Others: In-house, AMQP and XMPP (43% of developers)
 		</t>
 	</list>
   
 	</t>
   
   <t>
-    The sections below provide some more details.
+    The sections below provide some more details on top-of-the-list protocols other than HTTP/2.
   </t>   
   
     <section title="HTTP/1.1"> 
@@ -151,7 +153,7 @@ This document makes the case for HTTP/2 for IoT.
 
 		<t>       
       HTTP/1.1 is very clearly a mismatch for the constrained devices and networks that characterize IoT. Despite its shortcomings, it is the most 
-      popular protocol for IoT applications (63% per the aforementioned survey). Why would such an ill-suited protocol be clearly the most
+      popular protocol for IoT applications (61% per the aforementioned survey). Why would such an ill-suited protocol be clearly the most
       popular for IoT applications? It is by far the most commonly known protocol. It has
       many implementations, plenty in open source, with massive support in all platforms, tools and APIs. It is easy to find know-how and support. 
       In short, it has the power and convenience that comes with being the mainstream protocol. 
@@ -165,35 +167,49 @@ This document makes the case for HTTP/2 for IoT.
 
     <section title="MQTT"> 
 		<t> 
-      MQ Telemetry Transport (MQTT) is a publish/subscribe messaging protocol created by IBM, now being standardized
-      by OASIS. It is popular in the internet scenario (node to cloud, gateway to cloud). It is a compact, binary protocol,
-      and is very popular in certain application domains.
+      MQ Telemetry Transport (MQTT) is a publish/subscribe messaging protocol running on top of TCP. It was created by IBM, now being standardized
+      by OASIS. It is popular in the internet scenario (node to cloud, gateway to cloud) and it aims to connect embedded devices and networks with applications
+and middleware. It is a compact, binary protocol, and is very popular in certain application domains. It has been known as a protocol suitable to be used in resource constrained devices and unreliable networks.
 		</t>
 
 		<t>       
-      It is the second most popular protocol in the survey (behind HTTP/1.1) with 53% of developers using it. In the internet scenario,
+      It is the second most popular protocol in the survey (behind HTTP/1.1) with 52% of developers using it. In the internet scenario,
       however, TLS is mandatory. In practice, additional TLS overhead is required for all Internet scenario exchanges, so all
       protocols are slightly larger and MQTT loses some relative size advantage. There is a spec for MQTT over UDP, but, by far 
       it is most commonly deployed over TCP (port 8833 when over TLS,
       port 1883 without TLS). Even when using TLS, it has the well-known firewall traversal issues common to any protocol not over port 
       443.
 		</t>
-    </section>
+		
+	</section>
 
     <section title="CoAP"> 
 		<t> 
-      CoAP is a compact, binary UDP-based protocol based on RESTful principles and closely patterned after HTTP/1.1. 
-      It also adds some semantics.  
-		</t>
-   	<t> 
-      When the IETF CoAP 
+      CoAP is a compact, binary UDP-based protocol based on RESTful principles and closely patterned after HTTP/1.1. It has been designed to be used in constrained devices and constrained networks. The protocol specification has been published in RFC 7252, although additional functionalities such as elaborated congestion control, block-wise transfers, and HTTP mapping are still in process to be specified. 
+      </t>
+      <t>
+      The protocol meets IoT requirements through the modification of  some HTTP functionalities to achieve low power consumption and operation over lossy links. In addition, CoAP may interact easily with HTTP through a proxy thanks to the common REST architecture. CoAP works on port 5683 and offers reliable delivery (optional), unicast and multicast support, and asynchronous message exchange using simple and low complexity headers (a typical CoAP message can be between 10 and 20 bytes). 
+      </t>
+      <t>
+      It is the third most popular protocol in the survey with a 21% preference. Nevertheless, since CoAP is UDP-based, it also suffers from firewall traversal issues and lack of integration with existing enterprise infrastructures. There is ongoing work to specify the use of CoAP over TCP as well as CoAP over TLS, in an attempt to overcome issues with middleboxes and achieve a better integration with web environments.
 		</t>
 
-		<t>       
-
-		</t>
     </section>
-
+    
+    <section title="XMPP?"> 
+		<t></t>
+	</section>
+	
+	<section title="AMQP?"> 
+		<t></t>
+	</section>
+    
+ <section title="Protocols Comparison"> 
+	<t>
+    The aformentioned protocols have been compared in both experimental and emulated environments. Previous reports show that performance is highly dependent on the network conditions <xref target="IEEE_survey"></xref>: in good link conditions with low packet loss, MQTT delivers packets with lower delay than CoAP; however, if packet loss is under 25% and messages are of a small size, CoAP demonstrates a better link usage than MQTT. CoAP has also been compared to HTTP/1.1. In terms of power consumption and response time, naturally CoAP behaves better than HTTP/1.1 thanks to the reduced packet sizes. No reports have been found comparing MQTT or CoAP to HTTP/2.
+    </t>
+ </section>
+   
 </section>
 
 <section title="Importance of Protocol Reuse (gab)"> 
@@ -266,6 +282,30 @@ This document makes the case for HTTP/2 for IoT.
 
    <references title="Informative References">
       &RFC2629;
+      
+      <reference anchor="Eclipse_survey">
+        <front>
+          <title>IoT Developer Survey</title>
+          <author>         
+			<organization>Eclipse Foundation</organization>
+			<address/>
+		  </author>		
+          <date month="April" year="2016" />
+        </front>
+        </reference>
+        
+       <reference anchor="IEEE_survey">
+        <front>
+          <title>Internet of Things: A Survey on Enabling Technologies, Protocols, and Applications</title>
+          <author initials="A." surname="Al-Fuqaha et al." fullname="A. Al-Fuqaha et al.">         
+			<organization/>
+			<address/>
+		  </author>		
+          <date month="November" year="2015" />
+        </front>
+        <seriesInfo name="" value="" />
+        </reference>
+        
    </references>
   </back>
 </rfc>
