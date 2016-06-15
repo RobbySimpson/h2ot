@@ -39,6 +39,13 @@
         <email>scespedes@ing.uchile.cl</email>
       </address>
     </author>
+
+    <author initials="S." surname="Loreto" fullname="Salvatore Loreto">
+      <organization>Ericsson</organization>
+      <address>
+        <email>salvatore.loreto@ericsson.com</email>
+      </address>
+    </author>
     
     <date month="June" year="2016" />
     <area>Applications</area>
@@ -47,6 +54,7 @@
 	    <t>
 This document makes the case for HTTP/2 for IoT. 
 	    </t>
+
     </abstract>
   </front>
 
@@ -92,7 +100,7 @@ This document makes the case for HTTP/2 for IoT.
 			A gateway node (see above) engages in communication with unconstrained networks, typically a cloud service on the Internet.
 		</t>
 
-		<t hangText="gateway to cloud:">			
+		<t hangText="node to cloud:">			
       A node on a constrained network engages in direct communcation with unconstrained networks, typically a cloud service on the Internet.
 		</t>
 	</list>   
@@ -192,10 +200,18 @@ and middleware. It is a compact, binary protocol, and is very popular in certain
 
     <section title="CoAP"> 
 		<t> 
-      CoAP is a compact, binary UDP-based protocol based on RESTful principles and closely patterned after HTTP/1.1. It has been designed to be used in constrained devices and constrained networks. The protocol specification has been published in RFC 7252, although additional functionalities such as elaborated congestion control, block-wise transfers, and HTTP mapping are still in process to be specified. 
+      CoAP is a compact, binary UDP-based protocol based on RESTful principles and closely patterned after HTTP/1.1. 
+      It has been designed to be used in constrained devices and constrained networks. 
+      The protocol specification has been published in RFC 7252, although additional functionalities such as elaborated congestion control, 
+      block-wise transfers, and HTTP mapping are still in process to be specified. 
       </t>
+
+
       <t>
-      The protocol meets IoT requirements through the modification of  some HTTP functionalities to achieve low power consumption and operation over lossy links. In addition, CoAP may interact easily with HTTP through a proxy thanks to the common REST architecture. CoAP works on port 5683 and offers reliable delivery (optional), unicast and multicast support, and asynchronous message exchange using simple and low complexity headers (a typical CoAP message can be between 10 and 20 bytes). 
+      The protocol meets IoT requirements through the modification of some HTTP functionalities to achieve low power consumption and operation over lossy links. 
+      In addition, CoAP may interact easily with HTTP through a proxy thanks to the common REST architecture. CoAP works on port 5683 and offers optional reliable 
+      delivery (thru a retransmission mechanism), support for unicast and multicast (which satisfies group communication for IoT), and asynchronous message exchange using simple and low complexity headers (a typical CoAP message can be between 
+      10 and 20 bytes). 
       </t>
       <t>
       It is the third most popular protocol in the survey with a 21% preference. Nevertheless, since CoAP is UDP-based, it also suffers from firewall traversal issues and lack of integration with existing enterprise infrastructures. There is ongoing work to specify the use of CoAP over TCP as well as CoAP over TLS, in an attempt to overcome issues with middleboxes and achieve a better integration with web environments.
@@ -261,11 +277,39 @@ and middleware. It is a compact, binary protocol, and is very popular in certain
   </t>
 </section>
 
+
 <section title="HTTP/2 over UDP - QUIC (salvatore)"> 
   <t>
-    TODO
-  </t>
+    QUIC (Quick UDP Internet Connections) is a new multiplex transport protocol designed to run in userspace atop UDP optimized for HTTP/2 semantic. The protocol
+    is still in its early days and the standardization work in IETF has just started.</t>
+
+  <t>QUIC provides several functionalities already present in TCP, TLS and HTTP/2
+
+  <list style='symbols'>
+		<t> connection semantics, reliability, and congestion control equivalent to TCP.</t>
+		<t> security equivalent to TLS </t>
+		<t> multiplexing and flow control equivalent to HTTP/2</t>
+	</list>
+
+   </t>
+
+   <t>Even the functionality are similar to the one present in existing protocols, it has been re-designed to be more efficient.</t>
+
+   <t>To improve the Connection Establishement latency QUIC combines the crypto and transport handshakes, reducing the
+   number of roundtrips required for setting up a secure connection. QUIC connections are commonly 0-RTT, meaning that on most QUIC
+   connections, data can be sent immediately without waiting for a reply from the server, as compared to the 1-3 roundtrips required for
+   TCP+TLS before application data can be sent.</t>
+
+   <t>QUIC has been designed to provide richer information to congestion control algorithms than TCP, moreover the actual congestion control
+   is plugable in QUIC.</t> 
+
+   <t>Even if QUIC has been initially designed with HTTP/2 as the primary application protocol to support, it is meant to becom a modern general-purpose transport
+    protocol. The IETF standization effort will also focus on describing the mapping of HTTP/2 semantics using QUIC specifically with the goal of minimizing web latency using QUIC. 
+    This mapping will accommodate the extension mechanisms defined in the HTTP/2 specification. </t>
+
 </section>
+
+
 
 <section title="Profile of HTTP/2 for IoT (gab)"> 
   <t>
