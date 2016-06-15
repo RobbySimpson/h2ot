@@ -33,6 +33,13 @@
       </address>
     </author>
 
+    <author initials="S." surname="Cespedes" fullname="Sandra Cespedes">
+      <organization>Universidad de Chile</organization>
+      <address>
+        <email>scespedes@ing.uchile.cl</email>
+      </address>
+    </author>
+    
     <date month="June" year="2016" />
     <area>Applications</area>
     <keyword>HTTP, IoT</keyword>
@@ -214,7 +221,37 @@ and middleware. It is a compact, binary protocol, and is very popular in certain
 
 <section title="Importance of Protocol Reuse (gab)"> 
   <t>
-    TODO
+    These protocols often do not exist in a vacuum. Typically, they are mandated as part of a given stack specified by
+    any of several IoT consortia (e.g., OFC, AllJoyn, Thread Group, etc). We know that these multiple IoT protocols
+    (and stacks) provide very useful sources of information for prying eyes (See “US intelligence chief says we might use the IoT to spy on you” at http://www.wired.com/2012/03/petraeus-tv-remote/). Security and privacy issues are exacerbated because:
+    
+  <list style='symbols'>
+		<t> 
+			IoT is the worst of all security worlds: (1) constraints push devices into taking shortcuts and
+      (2) there is less physical security with such devices (after installation they are typically reachable by unfriendly hands).
+		</t>
+		<t> 
+			Each of these protocols is an island with its own security measures (or lack thereof) and very limited review. 
+		</t>
+	</list>
+  </t>
+  <t>
+    The previous two points can be summarized as follows:
+    
+   <list style='hanging'>
+		<t hangText="A security and privacy environment even more challenging than usual:"> 
+			This is receiving much attention from the research and standardization communities. It is the sort of challenge that stimulates researchers into high gear. It is a daunting problem for sure, but at least it is on the radar of folks and consortia working on IoT. Nevertheless, many issues will arise because of this (e.g., discovery of serious flaws in Samsung SmartThings locks and devices).
+		</t>
+		<t hangText="Many different protocol stacks at play:"> 
+			This is a much more worrisome issue if one considers that a vast majority of issues arising with security have less to do with crypto (the first point above) and more to do with software engineering, and silly bugs (this point). Each stack added creates more attack surface. At the same time, each one of these stacks gather less attention and scrutiny than software used for mainstream scenarios such as the web. We have seen no shortage of issues on OpenSSL and similar heavily-used software. We can expect much worse from stacks that are not nearly as well-known nor nearly as exercised. And if we have not one, but several of these stacks untested by time and millions of eyeballs, we are inviting disaster.
+		</t>
+	</list> 
+  </t>
+  <t>
+    Furthermore, multiple stacks defeat the purpose of the “I” in IoT: interoperability.  This goes back to the issue of security. A recent Harvard report on the state of surveillance and erosion of privacy (https://cyber.law.harvard.edu/pubrelease/dont-panic/Dont_Panic_Making_Progress_on_Going_Dark_Debate.pdf) concludes among its findings that the projected substantial growth of IoT will drastically change surveillance (surveillance is not merely limited to government agencies of course), and that the fragmentation of ecosystems hinders the deployment of countermeasures (e.g., end-to-end encryption) as that requires more coordination and standardization than currently available. This not only gives rise to rogue surveillance sites such as Shodan (https://www.shodan.io/), but also represents a great opportunity for government agencies’ surveillance needs (http://www.theguardian.com/technology/2016/feb/09/internet-of-things-smart-home-devices-government-surveillance-james-clapper). 
+  </t>
+  <t>
+    Reusing mainstream protocols affords the benefits of using better-known technology, with easier access to reference implementations (including open source), hiring of people with the required skills and experience, training, etc. They are basically the same arguments that were used originally to justify the use of IP-based networking over custom-built stacks. The message was heard loud and clear but for the most part it was applied to only a limited set of components (e.g., IP, UDP, DTLS). Other components are still being custom built (albeit, on top of IP). 
   </t>
 </section>
 
