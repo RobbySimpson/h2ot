@@ -350,9 +350,133 @@ and middleware. It is a compact, binary protocol, and is very popular in certain
 </section>
 
 <section title="Experimentation and Performance (?)"> 
-  <t>
-    TODO
+  <t> This section presents some simple results obtained using the Deuterium HTTP/2 library [XXX - reference] and is not intended to be complete, but rather a start for discussion. From an IoT perspective, the reduced message sizes presented help to both conserve bandwidth and battery life, as well as potentially saving some memory/buffer space. </t>
+
+  <t> The results presented in this section make the following assumptions and considerations:
+    <list style='symbols'>
+      <t> Overhead from TCP and TLS are ignored </t>
+      <t> An attempt to minimize the headers used has been made while still maintaining RFC compliance </t>
+      <t> No entries are made into the HTTP/2 dynamic table, thus removing some potential optimization </t>
+      <t> Connection establishment and teardown have been ignored, though clearly these are important considerations and differences between the various IoT application protocols </t>
+    </list>
   </t>
+
+  <section title="GET Example"> 
+    <t> This first example compares and contrasts a GET method to a resource containing an XML representation of a simple switch using HTTP/1.1 and HTTP/2. </t>
+    
+    <section title="HTTP/1.1">
+      <list style='symbols'>
+        <t> Step 1: Client sends (47 octets):
+          <figure>
+            <artwork>
+4745 5420 2f6f 6e6f 6666 2048 5454 502f 312e 310d
+0a48 6f73 743a 2066 6f6f 0d0a 4163 6365 7074 3a20
+2a2f 2a0d 0a0d 0a
+            </artwork>
+          </figure>
+          In ASCII:
+          <figure>
+            <artwork>
+GET /onoff HTTP/1.1\r\n
+Host: foo\r\n
+Accept: */*\r\n
+\r\n
+            </artwork>
+          </figure>
+        </t>
+        <t> Step 2: Server sends (107 + 36 octets):
+          <figure>
+            <artwork>
+4854 5450 2f31 2e31 2032 3030 204f 4b0d 0a44 6174
+653a 204d 6f6e 2c20 3039 204d 6172 2032 3031 3520
+3036 3a32 363a 3434 2047 4d54 0d0a 436f 6e74 656e
+742d 4c65 6e67 7468 3a20 3336 0d0a 436f 6e74 656e
+742d 5479 7065 3a20 6170 706c 6963 6174 696f 6e2f
+786d 6c0d 0a0d 0a
+3c4f 6e4f 6666 3e0a 093c 7374 6174 653e 6f66 663c
+2f73 7461 7465 3e0a 3c2f 4f6e 4f66 663e 
+            </artwork>
+          </figure>
+          In ASCII:
+          <figure>
+            <artwork>
+HTTP/1.1 200 OK\r\n
+Date: Mon, 09 Mar 2015 06:26:44 GMT\r\n
+Content-Length: 36\r\n
+Content-Type: application/xml\r\n
+\r\n
+<OnOff>\n
+\t<state>off</state>\n
+</OnOff>
+            </artwork>
+          </figure>
+        </t>
+      </list>
+    </section>
+    
+    <section title="HTTP/2">
+      <list style='symbols'>
+        <t> Step 1: Client sends (34 octets):
+          <figure>
+            <artwork>
+0000 1901 0500 0000 01
+8286 0585 60f5 1e59 7f01 8294 e70f 0489 f963 e7ef
+b401 5c00 07
+            </artwork>
+          </figure>
+          Representing:
+          <figure>
+            <artwork>
+:method: GET
+:path: /onoff
+:scheme: http
+:authority: foo
+accept: */*
+            </artwork>
+          </figure>
+        </t>
+        <t> Step 2: Server sends (54 octets):
+          <figure>
+            <artwork>
+0000 2d01 0400 0000 01
+880f 1296 d07a be94 03ea 681d 8a08 016d 4039 704e
+5c69 a531 68df 0f10 8b1d 75d0 620d 263d 4c79 a68f
+0f0d 8265 cf
+            </artwork>
+          </figure>
+          Representing:
+          <figure>
+            <artwork>
+:status: 200
+content-type: application/xml
+content-length: 36
+date: Mon, 09 Mar 2015 06:26:44 GMT
+            </artwork>
+          </figure>
+        </t>
+        <t> Step 3: Server sends (45 octets):
+          <figure>
+            <artwork>
+0000 2400 0100 0000 01
+3c4f 6e4f 6666 3e0a 093c 7374 6174 653e 6f66 663c
+2f73 7461 7465 3e0a 3c2f 4f6e 4f66 663e
+            </artwork>
+          </figure>
+          Representing:
+          <figure>
+            <artwork>
+<OnOff>
+	<state>off</state>
+</OnOff>
+            </artwork>
+          </figure>
+        </t>
+      </list>
+    </section>
+    <section title="Comparison">
+      <t> In total and ignoring the payload (36 octets), the HTTP/2 flow is 37% smaller than the HTTP/1.1 flow. </t>
+    </section>
+  </section>
 </section>
 
 
