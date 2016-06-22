@@ -47,6 +47,13 @@
       </address>
     </author>
     
+    <author initials="R." surname="Simpson" fullname="Robby Simpson">
+      <organization>General Electric</organization>
+        <address>
+          <email>rsimpson@gmail.com</email>
+        </address>
+    </author>
+    
     <date month="June" year="2016" />
     <area>Applications</area>
     <keyword>HTTP, IoT</keyword>
@@ -312,8 +319,15 @@ and middleware. It is a compact, binary protocol, and is very popular in certain
 
 
 <section title="Profile of HTTP/2 for IoT (gab)"> 
-  <t>
-    TODO
+  <t>HTTP/2 has many negotiable settings that can improve its performance for IoT applications by reducing bandwidth, codespace, and RAM requirements. Specifically, the following settings and values have been found to be useful in IoT applications:
+    <list style='symbols'>
+      <t> SETTINGS_ENABLE_PUSH: this functionality may not be required in some IoT applications </t>
+      <t> SETTINGS_HEADER_TABLE_SIZE: this setting allows hosts to limit the size of the header compression table used for decoding, reducing required RAM, but potentially increasing bandwidth requirements </t>
+      <t> SETTINGS_INITIAL_WINDOW_SIZE: this setting allows hosts to limit the flow control window, potentially reducing buffer requirements at the expense of potentially underutilized bandwidth-delay products </t>
+      <t> SETTINGS_MAX_CONCURRENT_STREAMS: this settings allows hosts to limit the number of simulataneous streams for a connection </t>
+      <t> SETTINGS_MAX_FRAME_SIZE: this setting allows hosts to specify the largest frame size they are willing to receive. Somewhat counterintuitively, IoT hosts may wish to leave this value large and rely on flow control to avoid unnecessary framing overhead. </t>
+      <t> SETTINGS_MAX_HEADER_LIST_SIZE: this setting allows hosts to limit the maximum size of the header list they are willing to receive </t>
+    </list>
   </t>
 </section>
 
@@ -330,9 +344,9 @@ and middleware. It is a compact, binary protocol, and is very popular in certain
 </section>
 
 <section title="Implementation Considerations (Sandra)"> 
-  <t>
-    TODO
-  </t>
+  <t> In addition to underlying stack considerations such as IPv4, IPv6, TCP, and TLS implementations, there are several implementation considerations for HTTP/2 for IoT. A primary consideration is the number of allowed simulataneous HTTP/2 connections. As each connection has associated overhead, as well as overhead for each stream, constrained hosts may wish to limit their number of simulataneous connections. However, implementers should consider that some popular browsers require more than one connection to operate. </t>
+
+  <t> Should TLS be used, implementers may wish to consider utilizing hardware-based encryption to further reduce codespace and RAM requirements. </t>
 </section>
 
 <section title="Experimentation and Performance (?)"> 
@@ -390,7 +404,3 @@ and middleware. It is a compact, binary protocol, and is very popular in certain
    </references>
   </back>
 </rfc>
-
-<!--
-  edited with Visual Studio Code
-  -->
