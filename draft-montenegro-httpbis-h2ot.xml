@@ -365,6 +365,7 @@ and middleware. It is a compact, binary protocol, and is very popular in certain
     <t> This first example compares and contrasts a GET method to a resource containing an XML representation of a simple switch using HTTP/1.1 and HTTP/2. </t>
     
     <section title="HTTP/1.1">
+      <t>
       <list style='symbols'>
         <t> Step 1: Client sends (47 octets):
           <figure>
@@ -412,9 +413,11 @@ Content-Type: application/xml\r\n
           </figure>
         </t>
       </list>
+      </t>
     </section>
     
     <section title="HTTP/2">
+      <t>
       <list style='symbols'>
         <t> Step 1: Client sends (34 octets):
           <figure>
@@ -472,6 +475,7 @@ date: Mon, 09 Mar 2015 06:26:44 GMT
           </figure>
         </t>
       </list>
+      </t>
     </section>
     <section title="Comparison">
       <t> In total and ignoring the payload (36 octets), the HTTP/2 flow is 37% smaller than the HTTP/1.1 flow. </t>
