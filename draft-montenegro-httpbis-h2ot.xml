@@ -344,7 +344,11 @@ and middleware. It is a compact, binary protocol, and is very popular in certain
 </section>
 
 <section title="Implementation Considerations (Sandra)"> 
-  <t> In addition to underlying stack considerations such as IPv4, IPv6, TCP, and TLS implementations, there are several implementation considerations for HTTP/2 for IoT. A primary consideration is the number of allowed simulataneous HTTP/2 connections. As each connection has associated overhead, as well as overhead for each stream, constrained hosts may wish to limit their number of simulataneous connections. However, implementers should consider that some popular browsers require more than one connection to operate. </t>
+  <t> In addition to underlying stack considerations such as IPv4, IPv6, TCP, and TLS implementations, there are several implementation considerations for HTTP/2 for IoT. </t>
+  
+  <t> A primary consideration is the number of allowed simulataneous HTTP/2 connections. As each connection has associated overhead, as well as overhead for each stream, constrained hosts may wish to limit their number of simulataneous connections. However, implementers should consider that some popular browsers require more than one connection to operate. </t>
+
+  <t> In addition to minimizing the number of simulataneous connections, hosts should consider leaving connections open if there is a possibility of further communication with the remote peer. HTTP/2 contains mechanisms such as PING to periodically check idle connections. Leaving established connections open when there is a possibility of future communication allows connection establishment overhead (and potentially TLS session establishment overhead) to be avoided. </t>
 
   <t> Should TLS be used, implementers may wish to consider utilizing hardware-based encryption to further reduce codespace and RAM requirements. </t>
 </section>
@@ -479,6 +483,10 @@ date: Mon, 09 Mar 2015 06:26:44 GMT
     </section>
     <section title="Comparison">
       <t> In total and ignoring the payload (36 octets), the HTTP/2 flow is 37% smaller than the HTTP/1.1 flow. </t>
+      
+      <t> The use of additional headers, particularly common headers that are present in the HTTP/2 static table, will result in greater savings. </t>
+      
+      <t> While not compared here, HTTP/2's ability to reuse connections for multiple streams results in connection establishment overhead, such as TCP connection establishment and TLS session establishment, diminishing. </t>
     </section>
   </section>
 </section>
