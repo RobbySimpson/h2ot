@@ -366,8 +366,8 @@ and middleware. It is a compact, binary protocol, and is very popular in certain
     
     <section title="HTTP/1.1">
       <t>
-      <list style='symbols'>
-        <t> Step 1: Client sends (47 octets):
+      <list style='numbers'>
+        <t> Client sends (47 octets):
           <figure>
             <artwork><![CDATA[
 4745 5420 2f6f 6e6f 6666 2048 5454 502f 312e 310d
@@ -385,7 +385,7 @@ Accept: */*\r\n
             ]]></artwork>
           </figure>
         </t>
-        <t> Step 2: Server sends (107 + 36 octets):
+        <t> Server sends (107 + 36 octets):
           <figure>
             <artwork><![CDATA[
 4854 5450 2f31 2e31 2032 3030 204f 4b0d 0a44 6174
@@ -418,8 +418,8 @@ Content-Type: application/xml\r\n
     
     <section title="HTTP/2">
       <t>
-      <list style='symbols'>
-        <t> Step 1: Client sends (34 octets):
+      <list style='numbers'>
+        <t> Client sends (34 octets):
           <figure>
             <artwork><![CDATA[
 0000 1901 0500 0000 01
@@ -438,7 +438,7 @@ accept: */*
             ]]></artwork>
           </figure>
         </t>
-        <t> Step 2: Server sends (54 octets):
+        <t> Server sends (54 octets):
           <figure>
             <artwork><![CDATA[
 0000 2d01 0400 0000 01
@@ -457,7 +457,7 @@ date: Mon, 09 Mar 2015 06:26:44 GMT
             ]]></artwork>
           </figure>
         </t>
-        <t> Step 3: Server sends (45 octets):
+        <t> Server sends (45 octets):
           <figure>
             <artwork><![CDATA[
 0000 2400 0100 0000 01
