@@ -350,7 +350,7 @@ and middleware. It is a compact, binary protocol, and is very popular in certain
 </section>
 
 <section title="Experimentation and Performance (?)"> 
-  <t> This section presents some simple results obtained using the Deuterium HTTP/2 library [XXX - reference] and is not intended to be complete, but rather a start for discussion. From an IoT perspective, the reduced message sizes presented help to both conserve bandwidth and battery life, as well as potentially saving some memory/buffer space. </t>
+  <t> This section presents some simple results obtained using the Deuterium HTTP/2 library <xref target="Deuterium" /> and is not intended to be complete, but rather a start for discussion. From an IoT perspective, the reduced message sizes presented help to both conserve bandwidth and battery life, as well as potentially saving some memory/buffer space. </t>
 
   <t> The results presented in this section make the following assumptions and considerations:
     <list style='symbols'>
@@ -469,7 +469,7 @@ date: Mon, 09 Mar 2015 06:26:44 GMT
           <figure>
             <artwork><![CDATA[
 <OnOff>
-	<state>off</state>
+\t<state>off</state>
 </OnOff>
             ]]></artwork>
           </figure>
@@ -505,6 +505,13 @@ date: Mon, 09 Mar 2015 06:26:44 GMT
 
    <references title="Informative References">
       &RFC2629;
+      
+      <reference anchor="Deuterium" target="http://robbysimpson.org/deuterium/">
+        <front>
+          <title>Deuterium HTTP/2 Library</title>
+          <author initials="R." surname="Simpson" fullname="Robby Simpson" />
+        </front>
+      </reference>
       
       <reference anchor="Eclipse_survey">
         <front>
